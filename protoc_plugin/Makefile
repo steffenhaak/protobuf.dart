@@ -93,6 +93,15 @@ $(TEST_PROTO_LIBS): $(PLUGIN_SRC) $(TEST_PROTO_SRCS)
 		--plugin=protoc-gen-dart=$(realpath $(PLUGIN_PATH))\
 		$(TEST_PROTO_SRCS)
 
+	mkdir -p $(TEST_PROTO_DIR)/nullable
+
+	protoc\
+		--dart_out="nullable:$(TEST_PROTO_DIR)/nullable"\
+		-I$(TEST_PROTO_SRC_DIR)\
+		-Iprotos\
+		--plugin=protoc-gen-dart=$(realpath $(PLUGIN_PATH))\
+		$(TEST_PROTO_SRCS)
+
 update-pregenerated: $(PLUGIN_PATH) $(PREGENERATED_SRCS)
 	protoc --dart_out=lib/src/gen \
 		-Iprotos \
