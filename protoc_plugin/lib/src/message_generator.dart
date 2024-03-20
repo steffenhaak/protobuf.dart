@@ -656,7 +656,7 @@ class MessageGenerator extends ProtobufContainer {
       out.println(commentBlock);
     }
 
-    if (useNullable && field.isNullable) {
+    if (useNullable && field.isOptional) {
       fieldTypeString += '?';
     }
 
@@ -669,7 +669,7 @@ class MessageGenerator extends ProtobufContainer {
       defaultExpr,
       field.isRepeated,
       field.isMapField,
-      useNullable && field.isNullable,
+      useNullable && field.isOptional,
     );
 
     out.printlnAnnotated(
@@ -702,7 +702,7 @@ class MessageGenerator extends ProtobufContainer {
       _emitOverrideIf(field.overridesSetter, out);
       _emitIndexAnnotation(field.number, out);
       if (fastSetter != null) {
-        if (useNullable && field.isNullable) {
+        if (useNullable && field.isOptional) {
           fastSetter += 'Nullable';
         }
         out.printlnAnnotated(
@@ -718,7 +718,7 @@ class MessageGenerator extends ProtobufContainer {
         );
       } else {
         final setterName =
-            useNullable && field.isNullable ? '\$_setFieldNullable' : '\$_setField';
+            useNullable && field.isOptional ? '\$_setFieldNullable' : '\$_setField';
 
         out.printlnAnnotated(
           'set ${names.fieldName}($fieldTypeString value) => '

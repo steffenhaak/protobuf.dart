@@ -77,6 +77,12 @@ class ProtobufField {
   bool get isRepeated =>
       descriptor.label == FieldDescriptorProto_Label.LABEL_REPEATED;
 
+  bool get isOptional {
+    if (isRepeated) return false;
+    if (isRequired || !descriptor.proto3Optional) return false;
+    return true;
+  }
+
   /// Whether a numeric field is repeated and must be encoded with packed
   /// encoding.
   ///
@@ -150,12 +156,6 @@ class ProtobufField {
     // We could consider keeping hazzers for proto3-oneof fields. There they
     // seem useful and not breaking proto3 semantics, and dart protobuf uses it
     // for example in package:protobuf/src/protobuf/mixins/well_known.dart.
-  }
-
-  bool get isNullable {
-    if (isRepeated) return false;
-    if (isRequired) return false;
-    return descriptor.proto3Optional || baseType.isMessage;
   }
 
   /// Returns the type to use for the Dart field type.
