@@ -152,6 +152,12 @@ class ProtobufField {
     // for example in package:protobuf/src/protobuf/mixins/well_known.dart.
   }
 
+  bool get isNullable {
+    if (isRepeated) return false;
+    if (isRequired) return false;
+    return descriptor.proto3Optional || baseType.isMessage;
+  }
+
   /// Returns the type to use for the Dart field type.
   String getDartType() {
     if (isMapField) {
