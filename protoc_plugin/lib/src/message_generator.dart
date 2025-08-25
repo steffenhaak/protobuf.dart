@@ -154,6 +154,7 @@ class MessageGenerator extends ProtobufContainer {
     PbMixin? defaultMixin,
     Set<String> usedNames,
     int repeatedFieldIndex,
+    bool useNullable,
   ) : this._(
         descriptor,
         parent,
@@ -172,6 +173,7 @@ class MessageGenerator extends ProtobufContainer {
     PbMixin? defaultMixin,
     Set<String> usedNames,
     int repeatedFieldIndex,
+    bool useNullable,
   ) : this._(
         descriptor,
         parent,
@@ -718,7 +720,9 @@ class MessageGenerator extends ProtobufContainer {
         );
       } else {
         final setterName =
-            useNullable && field.isOptional ? '\$_setFieldNullable' : '\$_setField';
+            useNullable && field.isOptional
+                ? '\$_setFieldNullable'
+                : '\$_setField';
 
         out.printlnAnnotated(
           'set ${names.fieldName}($fieldTypeString value) => '
@@ -821,7 +825,7 @@ class MessageGenerator extends ProtobufContainer {
     if (fieldType == '$fixnumImportPrefix.Int64' && defaultExpr == 'null') {
       return '\$_getI64($index)';
     }
-    if (fieldType == '$_fixnumImportPrefix.Int64?') {
+    if (fieldType == '$fixnumImportPrefix.Int64?') {
       return '\$_getI64Nullable($index)';
     }
     if (isNullable) {
